@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Hangout Detection (Light Controller)",
+  "description": "Turns on and off the light for the chromebook",
+  "icons": {
+    "128": "images/ic_launch-128.png"
+  },
+  "version": "0.0.1",
+  "app": {
+    "background": {
+      "scripts": ["js/main.js"],
+      "persistent": false
+    }
+  },
+  "permissions": [
+    "hid", {
+      "usbDevices": [{
+        "vendorId": 1240,
+        "productId": 256
+      },
+      {
+        "vendorId": 1240,
+        "productId": 2856
+      }]
+    }
+  ]
+}
