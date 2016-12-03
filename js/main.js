@@ -1,17 +1,4 @@
-chrome.app.runtime.onLaunched.addListener(function() {
-    chrome.app.window.create('sample-led.html', {
-        id: 'sampleMain',
-        innerBounds: {
-            width: 400,
-            height: 150
-        },
-        resizable: false
-    }, function(openedWindow) {
-        chrome.app.window.get('sampleMain').onClosed.addListener(function() {
-            chrome.app.window.get('virtualLed').close();
-        });
-    });
-});
+
 
 var isInitialized = false;
 
@@ -36,7 +23,8 @@ chrome.runtime.onMessageExternal.addListener(
                 isInitialized = true;
             }
             console.log("Recieved " + request.light_state);
-            dell.led.changeColor("green");
+            var color = "green";
+            dell.led.changeColor(color);
 
         }
         else if(!request.light_state) {
@@ -46,10 +34,16 @@ chrome.runtime.onMessageExternal.addListener(
                 isInitialized = true;
             }
             console.log("Recieved " + request.light_state);
-            dell.led.changeColor("black");
+            var color = "black";
+            dell.led.changeColor(color);
 
         }
     });
+
+
+
+
+
 
 
 
