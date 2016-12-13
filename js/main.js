@@ -1,5 +1,5 @@
 var isInitialized = false; //This variable is to make sure that the first time they open their chromebook after it boots up, the light is initialized.
-
+const COMPANION_APP_EXTENSION_ID = "kckgfiaahinoeolaomjicclakgolhikb";
 function initialize() {
 
     //All the possible colors that the light can change to (black means off)
@@ -18,8 +18,10 @@ chrome.runtime.onMessageExternal.addListener(
 
     function(request, sender, sendResponse) {
 
-        if (sender.id == "") //Add room for possible blacklists should someone try to send this extension fake offs
-              // don't allow this extension access
+        if (sender.id != COMPANION_APP_EXTENSION_ID) { //Add room for possible blacklists should someone try to send this extension fake offs
+            // don't allow this extension access
+            console.log("Illegal Access");
+        }
         else if (request.light_state) { //If the message is sending the light state in the on position react to it
             if (!isInitialized) { //If our light has not been initialized yet run the initialisation
                 console.log("Initialized.");
