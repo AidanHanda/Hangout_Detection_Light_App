@@ -1,50 +1,57 @@
-
-
-var isInitialized = false;
+var isInitialized = false; //This variable is to make sure that the first time they open their chromebook after it boots up, the light is initialized.
 
 function initialize() {
+
+    //All the possible colors that the light can change to (black means off)
     var colors = ['white', 'black', 'blue', 'red', 'green', 'yellow', 'cyan',
         'magenta'
     ];
 
-    dell.led.initialize();
+    dell.led.initialize(); //Init function
+
+    //Makes sure the light is on every 300 milliseconds
     setTimeout(function() {
         dell.led.turnOn();
     }, 300);
 }
 chrome.runtime.onMessageExternal.addListener(
+
     function(request, sender, sendResponse) {
-        if (sender.id == "")
-            return;  // don't allow this extension access
-        else if (request.light_state) {
-            if(!isInitialized) {
-                console.log("Initialized.")
+
+        if (sender.id == "") //Add room for possible blacklists should someone try to send this extension fake offs
+              // don't allow this extension access
+        else if (request.light_state) { //If the message is sending the light state in the on position react to it
+            if (!isInitialized) { //If our light has not been initialized yet run the initialisation
+                console.log("Initialized.");
                 initialize();
                 isInitialized = true;
             }
-            console.log("Recieved " + request.light_state);
-            var color = "green";
+
+            console.log("Recieved " + request.light_state); //Log to the console for debugging/testing purposes
+
+            //-----
+            var color = "green"; // This color can be any of the colors in the colors list
+            //-----
+
             dell.led.changeColor(color);
 
         }
-        else if(!request.light_state) {
-            if(!isInitialized) {
-                console.log("Initialized.")
+        else if (!request.light_state) { //If the extension is sending the light state in the off position
+            if (!isInitialized) { //Do the initialisation for the light if it hasnt been initialized.
+                console.log("Initialized.");
                 initialize();
                 isInitialized = true;
             }
-            console.log("Recieved " + request.light_state);
-            var color = "black";
+
+            console.log("Recieved " + request.light_state); //Log to the console
+            var color = "black"; //Turn off the light (Black turns the light off)
             dell.led.changeColor(color);
 
         }
     });
 
 
-
-
-
-
+//Below is the API for the DELL CHROMEBOOK LIGHT, only used for controlling the light
 
 
 //Dell Led JS
@@ -154,13 +161,13 @@ chrome.runtime.onMessageExternal.addListener(
                 }
             });
         });
-    }
+    };
 
     /*
      * callback to handle device connection
      */
     dell.led._getDeviceCallBack = function(devices) {
-    }
+    };
 
     /*
      * Creates a command data array to be used with '_sendCommand' method. It receives as
