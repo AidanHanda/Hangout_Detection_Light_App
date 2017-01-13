@@ -15,22 +15,24 @@ function initialize() {
         dell.led.turnOn();
     }, 300);
 }
-
-function strobe() {
-    var off = false;
-    setTimeout(function doStrobe() {
-        if (lightState) {
-            switch (off) {
-                case false:
-                    dell.led.changeColor("green");
-                    break;
-                case true:
-                    dell.led.changeColor("black");
-                    break;
-            }
+var off = false;
+function doStrobe() {
+    if (lightState) {
+        switch (off) {
+            case true:
+                dell.led.changeColor("green");
+                off = false;
+                break;
+            case false:
+                dell.led.changeColor("black");
+                off = true;
+                break;
         }
-    }, 500);
+    }
+    setTimeout(doStrobe, 500);
 }
+doStrobe();
+
 chrome.runtime.onMessageExternal.addListener(
 
     function(request, sender, sendResponse) {
